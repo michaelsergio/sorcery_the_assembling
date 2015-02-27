@@ -1,22 +1,61 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <boost/program_options.hpp>
 
 //#define CARD argv[1]
+//#define CARD "card.png"
 #define CARD "card_table.png"
 
+#define OUTPUT_DIR "output/"
 
-void display(cv::Mat image) {
-  cv::namedWindow("Display Image", CV_WINDOW_AUTOSIZE );
-  imshow("Display Image", image);
-  cv::waitKey(0);
+bool g_display_all = true;
+
+
+// Display or writes file depending on global :(
+void display(const char *name, cv::Mat image) {
+  if (g_display_all) {
+    cv::namedWindow("Display Image", CV_WINDOW_AUTOSIZE );
+    imshow("Display Image", image);
+    cv::waitKey(0); 
+  }
+  else {
+    cv::imwrite(name, image);
+  }
 }
 
 int main(int argc, const char *argv[])
 {
-  //std::cout << "Hello World!\n";
+  namespace po = boost::program_options;
+  po::options_description desc("Allowed Options");
+  desc.add_options()
+    ("help", "produce help message")
+    ("display", po::value<bool>(), "display or write images (false)")
+    ("image", po::value<std::string>(), "the image path");
+
+  po::variables_map vm;
+  po::store(po::parse_command_line(argc, argv, desc), vm);
+  po::notify(vm);    
+
+  if (vm.count("help")) {
+    std::cout << desc << "\n";
+    return 1;
+  }
+
+  if (vm.count("display")) {
+    g_display_all = vm["display"].as<bool>();
+  }
+
+  const char *filename;
+  if (vm.count("image")) {
+    filename = vm["image"].as<std::string>().c_str();
+  }
+  else {
+    filename = CARD;
+  }
+
   cv::Mat image, dst, cdst;
-  image = cv::imread(CARD, 1 );
+  image = cv::imread(filename, 1 );
 
   if (!image.data) {
     printf("No image data \n");
@@ -47,7 +86,13 @@ int main(int argc, const char *argv[])
              3, CV_AA);
   }
 
-  display(dst);
+  display(OUTPUT_DIR "val.png", dst);
+
+  // TODO:
+  // Pull out the outer layer and classify as card.
+  // Using that as the dimensions for the new space. 
+  // Find the inner square and
+  // calculate the phash of the image.
 
   return 0;
 }
