@@ -1,7 +1,7 @@
 CPPFLAGS=-g $(shell root-config --cflags)
 LDFLAGS=-g $(shell root-config --ldflags)
 # LDLIBS=-L/usr/local/include/opencv2
-LDLIBS=-lopencv_core -lopencv_highgui
+LDLIBS=-lopencv_core -lopencv_highgui -lopencv_imgproc
 
 SRCS=detect.cc
 OBJS=$(subst .cc,.o,$(SRCS))
