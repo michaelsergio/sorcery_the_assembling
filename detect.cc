@@ -5,7 +5,7 @@
 
 //#define CARD argv[1]
 //#define CARD "card.png"
-#define CARD "card_table.png"
+#define CARD "imgs/card_table.png"
 
 #define OUTPUT_DIR "output/"
 
@@ -42,8 +42,6 @@ int main(int argc, const char *argv[])
     ("theta", po::value<double>(&theta)->default_value(CV_PI/180),
                "theta value def=CV_PI/180 (0.0174533)")
     ("image", po::value<std::string>(), "the image path");
-
-  std::cout << theta << "\n";
 
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
