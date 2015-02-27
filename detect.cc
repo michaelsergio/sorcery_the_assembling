@@ -26,12 +26,24 @@ void display(const char *name, cv::Mat image) {
 
 int main(int argc, const char *argv[])
 {
+  int threshold;
+  double rho;
+  double theta = CV_PI/180;
+
   namespace po = boost::program_options;
   po::options_description desc("Allowed Options");
   desc.add_options()
     ("help", "produce help message")
     ("display", po::value<bool>(), "display or write images (false)")
+    ("thresh", po::value<int>(&threshold)->default_value(25),
+               "threshold value")
+    ("rho", po::value<double>(&rho)->default_value(1),
+               "rho value")
+    ("theta", po::value<double>(&theta)->default_value(CV_PI/180),
+               "theta value def=CV_PI/180 (0.0174533)")
     ("image", po::value<std::string>(), "the image path");
+
+  std::cout << theta << "\n";
 
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -70,9 +82,9 @@ int main(int argc, const char *argv[])
   // Hough Line finder.
   // gets vector of lines (p, theta) (line-normal form)
   std::vector<cv::Vec4i> lines;
-  double rho = 1;
-  double theta = CV_PI/180;
-  int threshold = 25;
+
+
+  //def 25
   //int threshold = 250;
   cv::HoughLinesP(cdst, lines, rho, theta, threshold);
 
