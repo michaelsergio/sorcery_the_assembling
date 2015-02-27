@@ -9,6 +9,7 @@
 void img_display(cv::Mat image) {
   cv::namedWindow("Display Image", CV_WINDOW_AUTOSIZE );
   imshow("Display Image", image);
+  img_display(image);
 }
 
 int main(int argc, const char *argv[])
@@ -34,7 +35,7 @@ int main(int argc, const char *argv[])
   cv::HoughLines(image, lines, rho, theta, threshold);
 
   // Draw lines on image
-  for( size_t i = 0; i < lines.size(); i++ )
+  for(size_t i = 0; i < lines.size(); i++)
   {
     cv::Vec4i l = lines[i];
     int line_aa = 16;
@@ -45,8 +46,6 @@ int main(int argc, const char *argv[])
              3, CV_AA);
   }
 
-
-  img_display(image);
 
   cv::waitKey(0);
   return 0;
