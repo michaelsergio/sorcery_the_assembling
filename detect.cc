@@ -33,7 +33,7 @@ int main(int argc, const char *argv[])
   std::vector<cv::Vec4i> lines;
   double rho = 1;
   double theta = CV_PI/180;
-  int threshold = 50;
+  int threshold = 250;
   cv::HoughLinesP(cdst, lines, rho, theta, threshold);
 
   // Draw lines on image

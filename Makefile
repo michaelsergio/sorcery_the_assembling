@@ -7,13 +7,14 @@ SRCS=detect.cc
 OBJS=$(subst .cc,.o,$(SRCS))
 EXE=mtg.exe
 
+all: mtg
 
-all: hi
-
-hi: $(OBJS)
+mtg: $(OBJS)
 	$(CXX) -o $(EXE) $(OBJS) $(LDLIBS)
 
 detect.o: detect.cc
 
 clean:
 	$(RM) $(OBJS) $(EXE)
+run: mtg
+	./$(EXE)
